@@ -1,45 +1,56 @@
 import React, { useState } from 'react';
 import './App.css';
+import Controls from './components/Controls';
 import Display from './components/Display.js';
-import Controls from './components/Controls.js';
+
+const MAX_NUM__OF_STRIKES = 2;
+const MAX_NUM__OF_BALLS = 3;
 
 function App() {
-  const [strikes, setStrikes] = useState(0);
   const [balls, setBalls] = useState(0);
-
+  const [strikes, setStrikes] = useState(0);
 
   const scoreStrike = () => {
-    if (strikes === 2) {
+    if (strikes === MAX_NUM__OF_STRIKES) {
+      // struck out
       setStrikes(0);
       setBalls(0);
     } else {
-      setStrikes(strikes+1);
+      setStrikes(strikes + 1);
     }
   };
+
   const scoreBall = () => {
-    if (balls === 3) {
+    if (balls === MAX_NUM__OF_BALLS) {
+      // struck out
       setStrikes(0);
       setBalls(0);
     } else {
-      setBalls(balls+1);
+      setBalls(balls + 1);
     }
   };
+
   const scoreFoul = () => {
-    if (strikes !== 2) {
-      setStrikes(strikes+1);
+    if (strikes !== MAX_NUM__OF_STRIKES) {
+      setStrikes(strikes + 1);
     }
   };
+
   const scoreHit = () => {
+    // reset game
     setStrikes(0);
     setBalls(0);
   };
+
   return (
     <div className="App">
-      <Display strikes={strikes} balls={balls} />
-      <Controls strike={scoreStrike}
-                ball={scoreBall}
-                foul={scoreFoul}
-                hit={scoreHit} />
+      <Display balls={balls} strikes={strikes}/>
+      <Controls
+        strike={scoreStrike}
+        ball={scoreBall}
+        foul={scoreFoul}
+        hit={scoreHit}
+      />
     </div>
   );
 }
