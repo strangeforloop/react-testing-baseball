@@ -1,59 +1,54 @@
 import React from 'react';
-import { render, fireEvent, cleanup } from '@testing-library/react';
-import '@testing-library/react/cleanup-after-each';
-import Controls from './Controls.js';
+import { render, cleanup, fireEvent } from '@testing-library/react';
+import Controls from './Controls';
 
-// afterEach(cleanup);
+afterEach(() => {
+  cleanup();
+});
 
 describe('<Controls />', () => {
   it('renders without crashing', () => {
     render(<Controls />);
   });
-  it('strike', () => {
+  // (Method 1): Test if a function has run by using booleans.
+  it('clicking the strike button runs the strike function', () => {
     let clicked = false;
-    const { getByText } = render(<Controls strike={() => clicked = true} />);
+    const { getByText } = render(<Controls strike={() => { clicked = true; }}/>);
     const strikeButton = getByText(/strike/i);
     fireEvent.click(strikeButton);
     expect(clicked).toBe(true);
   });
-  it('strike with mocked function', () => {
-    const click = jest.fn();
-    const { getByText } = render(<Controls strike={click} />);
+  // (Method 2): Test if a function has run by using Jest mock functions.
+  it('clicking the strike button runs the strike function', () => {
+    const mockFunction = jest.fn(() => {});
+    const { getByText } = render(<Controls strike={mockFunction}/>);
     const strikeButton = getByText(/strike/i);
     fireEvent.click(strikeButton);
-    expect(click).toBeCalled();
+    // expect(mockFunction).toBeCalled();
+    expect(mockFunction.mock.calls.length).toBe(1);
   });
-  it('ball with mocked function', () => {
-    const click = jest.fn();
-    const { getByText } = render(<Controls ball={click} />);
+  it('clicking the ball button runs the ball function', () => {
+    const mockFunction = jest.fn(() => {});
+    const { getByText } = render(<Controls ball={mockFunction}/>);
     const ballButton = getByText(/ball/i);
     fireEvent.click(ballButton);
-    expect(click).toBeCalled();
+    // expect(mockFunction).toBeCalled();
+    expect(mockFunction.mock.calls.length).toBe(1);
   });
-  it('foul with mocked function', () => {
-    const click = jest.fn();
-    const { getByText } = render(<Controls foul={click} />);
+  it('clicking the foul button runs the foul function', () => {
+    const mockFunction = jest.fn(() => {});
+    const { getByText } = render(<Controls foul={mockFunction}/>);
     const foulButton = getByText(/foul/i);
     fireEvent.click(foulButton);
-    expect(click).toBeCalled();
+    // expect(mockFunction).toBeCalled();
+    expect(mockFunction.mock.calls.length).toBe(1);
   });
-  it('hit with mocked function', () => {
-    const click = jest.fn();
-    const { getByText } = render(<Controls hit={click} />);
+  it('clicking the hit button runs the hit function', () => {
+    const mockFunction = jest.fn(() => {});
+    const { getByText } = render(<Controls hit={mockFunction}/>);
     const hitButton = getByText(/hit/i);
     fireEvent.click(hitButton);
-    expect(click).toBeCalled();
+    // expect(mockFunction).toBeCalled();
+    expect(mockFunction.mock.calls.length).toBe(1);
   });
-  // it('all buttons work', () => {
-  //   const buttonText = ['strike', 'ball', 'foul', 'hit'];
-  //   const buttonFns = buttonText.map(() => jest.fn());
-  //   const props = buttonText.reduce((acc, text, index) => ({...acc, [text]: buttonFns[index]}) , {});
-  //   const {getByText} = render(<Controls {...props} />);
-  //   const buttons = buttonText.map(text => getByText(new RegExp(text, 'i')));
-  //   buttons.forEach((button, index) => {
-  //     fireEvent.click(button);
-  //     expect(buttonFns[index]).toBeCalled();
-  //   });
-  // });
-
 });
